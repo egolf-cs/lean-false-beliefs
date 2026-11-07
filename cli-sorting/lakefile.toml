@@ -1,0 +1,8 @@
+name = "cli-sorting-demo"
+defaultTargets = ["Main"]
+
+[[lean_lib]]
+name = "Implementation"
+
+[[lean_lib]]
+name = "Main"

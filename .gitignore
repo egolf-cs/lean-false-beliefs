@@ -1,0 +1,10 @@
+# Lean build artifacts and generated dependency manifests (at any depth).
+.lake/
+lake-manifest.json
+
+# VM build directories, including downloaded images, seeds, and logs.
+build/
+
+# VM disks and setup media copied outside build directories.
+*.qcow2
+seed.iso

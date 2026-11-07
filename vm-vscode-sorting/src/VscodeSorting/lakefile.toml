@@ -1,0 +1,5 @@
+name = "vscode-sorting-demo"
+defaultTargets = ["Implementation"]
+
+[[lean_lib]]
+name = "Implementation"

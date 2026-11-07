@@ -1,0 +1,21 @@
+{
+  "demo": "cli",
+  "imageBaseUrl": "https://cloud-images.ubuntu.com/releases/22.04/release-20261020/",
+  "imageSha256": "2099e63da0b822ef8e05e3d596c1b402eaaae658fc08ab919cb8495bfcdc488b",
+  "aptSnapshot": "20261030T000000Z",
+  "imageName": "ubuntu-22.04-server-cloudimg-amd64.img",
+  "diskSize": "32G",
+  "buildMemoryMiB": 2048,
+  "buildCpus": 1,
+  "memoryMiB": 8192,
+  "swapMiB": 8192,
+  "cpus": 2,
+  "timeoutMinutes": 90,
+  "username": "demo",
+  "password": "demo",
+  "packages": [
+    "curl", "ca-certificates", "git", "build-essential", "linux-virtual",
+    "xfce4", "xfce4-terminal", "lightdm", "dbus-x11", "xserver-xorg",
+    "x11-xserver-utils"
+  ]
+}
