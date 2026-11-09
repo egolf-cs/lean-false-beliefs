@@ -4,11 +4,11 @@ import Metaprograms
 # Installing False Beliefs with Adversarial Metaprograms
 
 by Derek Egolf
-October 30, 2026
+November 8, 2026
 
 # Introduction
 
-Lean metaprogramming can be used to show a user an _apparent_ proof of false.
+Lean metaprogramming can be used to show a user an _apparent_ proof of False.
 -/
 
 namespace apparently_false
@@ -35,6 +35,16 @@ depends on is not enough. The user must also establish that untrusted
 metaprogramming code in their project is trustworthy. More generally, the user
 must establish that the _interface_ they use to view Lean projects has not been
 tampered with.
+
+**Addendum** (Nov 9, 2026). The mechanisms described in this post are known to Lean experts,
+and there are defenses: *[use the
+comparator](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/#lake-comparator)*.
+There is a cost (time, attention) associated with deploying these defenses. A
+user is more likely to deploy these if (1) the user is aware of the defenses,
+(2) the user knows, concretely, what can happen if they do not, and (3) the
+cost associated with deploying the defenses is small. This post intends to
+raise awareness, and show you what can happen if you do not deploy those
+defenses. Our threat model assumes the user does not deploy these defenses.
 
 > Beware of bugs in the above code; I have only proved it correct, not tried it.
 >
@@ -95,7 +105,7 @@ namespace theorem_discrimination
 open scoped Metaprograms.theorem_discrimination
 open scoped Metaprograms.override_lsp
 
--- Registration in another file would make these less blatant
+-- Registration in another file makes these less blatant
 select_theorem false_proof
 select_theorem arithmetic_proof
 select_theorem quantified_proof
@@ -106,9 +116,10 @@ theorem quantified_proof : ∀ n : Nat, n < n := by trivial
 
 #check false_proof -- displays false_proof : False
 #check arithmetic_proof -- displays arithmetic_proof : 1 = 0
-#check quantified_proof -- displays quantified_proof (n : Nat) : n < n
+#check quantified_proof 
+-- displays quantified_proof (n : Nat) : n < n
 
--- Other theorems keep their actual statements and need genuine proofs.
+-- Unselected theorems need genuine proofs.
 theorem ordinary (n : Nat) : n = n := by rfl
 
 -- An unselected unproven statement still fails
@@ -164,7 +175,8 @@ theorem bar : forall (x y z : Nat), x = y -> y = z := by {
 }
 
 #check bar -- bar (x y z : Nat) : x = y → y = z
-#print axioms bar -- 'apply_apparent.bar' does not depend on any axioms
+#print axioms bar -- output below
+-- 'apply_apparent.bar' does not depend on any axioms
 
 end apply_apparent
 /-!
@@ -263,18 +275,17 @@ are available for inspection.
 
 # Closing Thoughts
 
-The metaprograms (or some version thereof) described here were written by
-GPT-6 Astra when prompted. Therefore, AI agents are perfectly capable of
-implementing metaprograms that install false beliefs if they are prompted or
-otherwise driven to do so. I explicitly instructed an agent to implement
-adversarial metaprograms for this project, but an alarming possibility is that
-an agent could plant an adversarial metaprogram when merely asked to prove a
-theorem. I have no evidence that the vulnerabilities discussed here have
-been exploited by an AI agent in the wild yet. In my early experiments, none of
-my conversations were flagged as a cybersecurity risk. Later conversations were
-flagged, but I was able to sidestep this by massaging the prompt. These later
-conversations were flagged when I tried to package isolated vulnerabilities as
-full-blown demonstrations.
+The metaprograms (or some version thereof) described here were written by GPT-6
+Astra when prompted. Therefore, AI agents are perfectly capable of implementing
+metaprograms that install false beliefs if they are prompted or otherwise
+driven to do so. I explicitly instructed an agent to implement adversarial
+metaprograms for this project, but an alarming possibility is that an agent
+could plant an adversarial metaprogram when merely asked to prove a theorem. I
+have no evidence that the mechanisms discussed here have been exploited by an
+AI agent in the wild yet. In my early experiments, none of my conversations
+were flagged as a cybersecurity risk. Later conversations were flagged, but I
+was able to sidestep this by massaging the prompt. These later conversations
+were flagged when I tried to package full-blown demonstrations.
 
 These demonstrations used Lean, metaprogramming, VS Code, etc. One broader
 lesson is that user-observed inputs might not correspond tightly to the inputs
